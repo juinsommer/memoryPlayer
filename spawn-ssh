@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+spawn ssh juinsommer@raspberrypi
+expect "juinsommer@raspberrypi's password:"
+sleep 1
+
+send "Jssd4601@\r"
+echo "Hello"

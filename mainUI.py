@@ -1,10 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import *
+from PyQt5.Qtcore import *
+from PyQt5.QtGui import *
 import sys
 
 
 class Ui_MainWindow(object):
     def __init__(self):
         super(Ui_MainWindow, self).__init__()
+        self.filename = None
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -296,7 +300,12 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Power Off"))
 
     def openFile(self):
-        fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Choose file", "~/", "All Files (*)")
+        dial        = QFileDialog()
+        options     = dial.Options()
+        options    |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self,"Select video file", "","All Files (*)", options=options)
+        if fileName:
+            self.filename = fileName
         
     def connect(self):
         self.pushButton_2.clicked.connect(self.openFile)
