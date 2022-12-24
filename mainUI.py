@@ -11,9 +11,13 @@ class MainUI(QWidget):
         super().__init__()
         self.gs = GenerateScript()
         self.setupUi(MainWindow)
+        self.ls = self.gs.getFileNames()
+        self.play_comboBox.addItems(self.ls)
+        self.remove_comboBox.addItems(self.ls)
+        self.interval_comboBox.setCurrentIndex(-1)
+        self.frames_comboBox.setCurrentIndex(-1)
         self.connect()
         
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(499, 376)
@@ -165,7 +169,7 @@ class MainUI(QWidget):
         MainWindow.setPalette(palette)
         MainWindow.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../../Downloads/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("images/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -221,22 +225,21 @@ class MainUI(QWidget):
         font.setWeight(75)
         self.upload_button.setFont(font)
         self.upload_button.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.upload_button.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.upload_button.setObjectName("upload_button")
         self.verticalLayout.addWidget(self.upload_button)
-        self.remove_button = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.remove_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget)
         font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.remove_button.setFont(font)
-        self.remove_button.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.remove_button.setObjectName("remove_button")
-        self.verticalLayout.addWidget(self.remove_button)
+        self.remove_comboBox.setFont(font)
+        self.remove_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.remove_comboBox.setObjectName("remove_comboBox")
+        self.verticalLayout.addWidget(self.remove_comboBox)
         self.label = QtWidgets.QLabel(self.frame_2)
         self.label.setGeometry(QtCore.QRect(280, 170, 211, 201))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("./cameraIcon.png"))
+        self.label.setPixmap(QtGui.QPixmap("images/cameraIcon.png"))
         self.label.setObjectName("label")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.frame_2)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(350, 20, 121, 61))
@@ -270,13 +273,14 @@ class MainUI(QWidget):
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.play_button = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
+        self.play_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.play_button.setFont(font)
-        self.play_button.setObjectName("play_button")
-        self.verticalLayout_3.addWidget(self.play_button)
+        self.play_comboBox.setFont(font)
+        self.play_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.play_comboBox.setObjectName("play_comboBox")
+        self.verticalLayout_3.addWidget(self.play_comboBox)
         self.interval_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
@@ -298,6 +302,7 @@ class MainUI(QWidget):
         font.setBold(True)
         font.setWeight(75)
         self.frames_comboBox.setFont(font)
+        self.frames_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.frames_comboBox.setObjectName("frames_comboBox")
         self.frames_comboBox.addItem("")
         self.frames_comboBox.addItem("")
@@ -327,11 +332,11 @@ class MainUI(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Memory Player"))
         self.cancel_button.setText(_translate("MainWindow", "Cancel"))
-        self.save_button.setText(_translate("MainWindow", "Done"))
+        self.save_button.setText(_translate("MainWindow", "Save"))
         self.upload_button.setText(_translate("MainWindow", "Upload"))
-        self.remove_button.setText(_translate("MainWindow", "Remove"))
+        self.remove_comboBox.setPlaceholderText(_translate("MainWindow", "Remove"))
         self.power_button.setText(_translate("MainWindow", "Power Off"))
-        self.play_button.setText(_translate("MainWindow", "Play"))
+        self.play_comboBox.setPlaceholderText(_translate("MainWindow", "Play Selected"))
         self.interval_comboBox.setPlaceholderText(_translate("MainWindow", "Interval"))
         self.interval_comboBox.setItemText(0, _translate("MainWindow", "1 hour"))
         self.interval_comboBox.setItemText(1, _translate("MainWindow", "2 hours"))
@@ -344,7 +349,6 @@ class MainUI(QWidget):
         self.frames_comboBox.setItemText(2, _translate("MainWindow", "4"))
         self.frames_comboBox.setItemText(3, _translate("MainWindow", "8"))
         self.frames_comboBox.setItemText(4, _translate("MainWindow", "16"))
-        self.frames_comboBox.setItemText(5, _translate("MainWindow", "24"))
 
     def uploadFile(self):
         fileName, _= QFileDialog.getOpenFileName(self,"Select video file", "","All Files (*)")
@@ -360,18 +364,57 @@ class MainUI(QWidget):
         MainWindow.close()
 
     def playSelected(self):
-        ls = self.gs.getFileNames()
-        
+        if self.gs.getFileNames() != self.ls:
+            self.play_comboBox.clear()
+            self.play_comboBox.addItems(self.ls)
+            self.play_comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
+  
+        selectedFile = self.play_comboBox.currentIndex()
+
+        if self.ls[selectedFile] in self.ls:
+            self.gs.playSelected(self.ls[selectedFile])
+
+        else:
+            print(self.ls[selectedFile] + " is not found.")
+
+    def selectInterval(self):
+        interval = self.interval_comboBox.currentText()
+        self.gs.setInterval(interval)
+        print("interval: ", interval)
+
+
+    def selectFramesPerInterval(self):
+        frames = self.frames_comboBox.currentText()
+        self.gs.setFramesPerInterval(frames)
+        print("frames per interval: ", frames)
+
+    def deleteSelected(self):
+        self.ls = self.gs.getFileNames()
+        if self.gs.getFileNames() != self.ls:
+            self.remove_comboBox.clear()
+            self.remove_comboBox.addItems(self.ls)
+            self.remove_comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
+
+        selectedFile = self.remove_comboBox.currentIndex()
+
+        if self.ls[selectedFile] in self.ls:
+            self.gs.deleteFile(self.ls[selectedFile])
+
+        else:
+            print(self.ls[selectedFile] + " is not found.")
 
     def connect(self):
         self.upload_button.clicked.connect(self.uploadFile)
         self.save_button.clicked.connect(self.saveChanges)
         self.cancel_button.clicked.connect(self.cancelChanges)
-        self.play_button.clicked.connect(self.playSelected)
+        self.play_comboBox.activated.connect(self.playSelected)
+        self.remove_comboBox.currentIndexChanged.connect(self.deleteSelected)
+        self.interval_comboBox.currentIndexChanged.connect(self.selectInterval)
+        self.frames_comboBox.currentIndexChanged.connect(self.selectFramesPerInterval)
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = MainUI()
     MainWindow.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec_())   
