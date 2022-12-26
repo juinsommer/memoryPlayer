@@ -3,19 +3,35 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from generateScript import GenerateScript
+from uploadDialog import Ui_uploadProgressDialog
+from powerDownDialog import Ui_power_dialogBox
+from deleteDialog import Ui_Dialog
 import sys
+import time
 
+# TODO: 
+# Make feature to rotate display
+# Implement power off
+# Implement dialog windows for errors and confirmations
+# Open dialog 
+#   * when deleting files for confirmation (delete before clicking "Save")
+#   * when uploading a file
+#   * confirmation of shutdown
+#   * for errors
 
 class MainUI(QWidget):
     def __init__(self):
         super().__init__()
         self.gs = GenerateScript()
+        self.time_modifier = False
         self.setupUi(MainWindow)
         self.ls = self.gs.getFileNames()
         self.play_comboBox.addItems(self.ls)
         self.remove_comboBox.addItems(self.ls)
-        self.interval_comboBox.setCurrentIndex(-1)
         self.frames_comboBox.setCurrentIndex(-1)
+        self.time_comboBox.setCurrentIndex(-1)
+        self.time_comboBox.setPlaceholderText("Interval")
+        self.interval_spinBox.setValue(2)
         self.connect()
         
     def setupUi(self, MainWindow):
@@ -169,7 +185,7 @@ class MainUI(QWidget):
         MainWindow.setPalette(palette)
         MainWindow.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./images/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -234,12 +250,13 @@ class MainUI(QWidget):
         font.setWeight(75)
         self.remove_comboBox.setFont(font)
         self.remove_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.remove_comboBox.setMaxVisibleItems(40)
         self.remove_comboBox.setObjectName("remove_comboBox")
         self.verticalLayout.addWidget(self.remove_comboBox)
         self.label = QtWidgets.QLabel(self.frame_2)
         self.label.setGeometry(QtCore.QRect(280, 170, 211, 201))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("images/cameraIcon.png"))
+        self.label.setPixmap(QtGui.QPixmap("./images/cameraIcon.png"))
         self.label.setObjectName("label")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.frame_2)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(350, 20, 121, 61))
@@ -268,7 +285,7 @@ class MainUI(QWidget):
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_4.setObjectName("frame_4")
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(self.frame_4)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 0, 201, 111))
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 201, 92))
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -281,22 +298,6 @@ class MainUI(QWidget):
         self.play_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.play_comboBox.setObjectName("play_comboBox")
         self.verticalLayout_3.addWidget(self.play_comboBox)
-        self.interval_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
-        self.interval_comboBox.setFont(font)
-        self.interval_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.interval_comboBox.setFrame(True)
-        self.interval_comboBox.setObjectName("interval_comboBox")
-        self.interval_comboBox.addItem("")
-        self.interval_comboBox.addItem("")
-        self.interval_comboBox.addItem("")
-        self.interval_comboBox.addItem("")
-        self.interval_comboBox.addItem("")
-        self.verticalLayout_3.addWidget(self.interval_comboBox)
         self.frames_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setBold(True)
@@ -311,6 +312,24 @@ class MainUI(QWidget):
         self.frames_comboBox.addItem("")
         self.frames_comboBox.addItem("")
         self.verticalLayout_3.addWidget(self.frames_comboBox)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.interval_spinBox = QtWidgets.QSpinBox(self.verticalLayoutWidget_3)
+        font = QtGui.QFont()
+        font.setStyleStrategy(QtGui.QFont.PreferDefault)
+        self.interval_spinBox.setFont(font)
+        self.interval_spinBox.setPrefix("")
+        self.interval_spinBox.setMinimum(1)
+        self.interval_spinBox.setMaximum(60)
+        self.interval_spinBox.setProperty("value", 4)
+        self.interval_spinBox.setObjectName("interval_spinBox")
+        self.horizontalLayout_2.addWidget(self.interval_spinBox)
+        self.time_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
+        self.time_comboBox.setObjectName("time_comboBox")
+        self.time_comboBox.addItem("")
+        self.time_comboBox.addItem("")
+        self.horizontalLayout_2.addWidget(self.time_comboBox)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.frame.raise_()
         self.verticalLayoutWidget_2.raise_()
         self.label.raise_()
@@ -337,23 +356,47 @@ class MainUI(QWidget):
         self.remove_comboBox.setPlaceholderText(_translate("MainWindow", "Remove"))
         self.power_button.setText(_translate("MainWindow", "Power Off"))
         self.play_comboBox.setPlaceholderText(_translate("MainWindow", "Play Selected"))
-        self.interval_comboBox.setPlaceholderText(_translate("MainWindow", "Interval"))
-        self.interval_comboBox.setItemText(0, _translate("MainWindow", "1 hour"))
-        self.interval_comboBox.setItemText(1, _translate("MainWindow", "2 hours"))
-        self.interval_comboBox.setItemText(2, _translate("MainWindow", "4 hours"))
-        self.interval_comboBox.setItemText(3, _translate("MainWindow", "12 hours"))
-        self.interval_comboBox.setItemText(4, _translate("MainWindow", "24 hours"))
         self.frames_comboBox.setPlaceholderText(_translate("MainWindow", "Frames Per Interval"))
         self.frames_comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.frames_comboBox.setItemText(1, _translate("MainWindow", "2"))
         self.frames_comboBox.setItemText(2, _translate("MainWindow", "4"))
         self.frames_comboBox.setItemText(3, _translate("MainWindow", "8"))
         self.frames_comboBox.setItemText(4, _translate("MainWindow", "16"))
+        self.frames_comboBox.setItemText(5, _translate("MainWindow", "24"))
+        self.time_comboBox.setItemText(0, _translate("MainWindow", "Minutes"))
+        self.time_comboBox.setItemText(1, _translate("MainWindow", "Hours"))
+    
+    def openUploadDialog(self):
+        self.window = QtWidgets.QDialog()
+        ui = Ui_uploadProgressDialog()
+        ui.setupUi(self.window)
+        self.window.show()
+
+    def openShutdownDialog(self):
+        self.window = QtWidgets.QMainWindow()
+        ui = Ui_power_dialogBox(self.gs)
+        ui.setupUi(self.window)
+        self.window.show()
+
+    def openDeleteDialog(self, file):
+        self.window = QtWidgets.QDialog()
+        ui = Ui_Dialog(self.gs, file)
+        ui.setupUi(self.window)
+        self.window.show()
 
     def uploadFile(self):
-        fileName, _= QFileDialog.getOpenFileName(self,"Select video file", "","All Files (*)")
+        fileName, _= QFileDialog.getOpenFileName(self, "Select video file", "",
+                                "Video Files (*.avi *.mp4 *.m4v *.mkv *.mov *.MOV)")
         if fileName:
-            self.gs.uploadFile(fileName)
+            exit_status = self.gs.uploadFile(fileName)
+            if exit_status:
+                self.openUploadDialog()
+
+            else:
+                raise Exception("\nUpload of " + fileName + " failed\n")
+
+            self.updateFiles(self.play_comboBox)
+            self.updateFiles(self.remove_comboBox)
     
     def saveChanges(self):
         self.gs.execFile()
@@ -364,11 +407,7 @@ class MainUI(QWidget):
         MainWindow.close()
 
     def playSelected(self):
-        if self.gs.getFileNames() != self.ls:
-            self.play_comboBox.clear()
-            self.play_comboBox.addItems(self.ls)
-            self.play_comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
-  
+        self.updateFiles(self.play_comboBox)
         selectedFile = self.play_comboBox.currentIndex()
 
         if self.ls[selectedFile] in self.ls:
@@ -378,39 +417,57 @@ class MainUI(QWidget):
             print(self.ls[selectedFile] + " is not found.")
 
     def selectInterval(self):
-        interval = self.interval_comboBox.currentText()
-        self.gs.setInterval(interval)
-        print("interval: ", interval)
+        interval = self.interval_spinBox.value()
+       
+        if self.time_modifier == False:
+            self.interval_spinBox.setMaximum(60)
+            self.interval = interval * 60
 
+        elif self.time_modifier == True:
+            self.interval = interval * 3600
+            self.interval_spinBox.setMaximum(24)
+
+        self.gs.setInterval(str(self.interval))
+
+    def timeModifier(self):
+        if self.time_comboBox.currentIndex() == 1:
+            self.time_modifier = True
+        
+        else:
+            self.time_modifier = False
 
     def selectFramesPerInterval(self):
         frames = self.frames_comboBox.currentText()
         self.gs.setFramesPerInterval(frames)
-        print("frames per interval: ", frames)
 
     def deleteSelected(self):
-        self.ls = self.gs.getFileNames()
-        if self.gs.getFileNames() != self.ls:
-            self.remove_comboBox.clear()
-            self.remove_comboBox.addItems(self.ls)
-            self.remove_comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
-
         selectedFile = self.remove_comboBox.currentIndex()
 
         if self.ls[selectedFile] in self.ls:
-            self.gs.deleteFile(self.ls[selectedFile])
+            self.openDeleteDialog(self.ls[selectedFile])
+            self.updateFiles(self.remove_comboBox)
+            
 
         else:
             print(self.ls[selectedFile] + " is not found.")
+
+    def updateFiles(self, comboBox):
+        if self.gs.getFileNames() != self.ls:
+            comboBox.clear()
+            comboBox.addItems(self.gs.getFileNames())
+            comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
+
 
     def connect(self):
         self.upload_button.clicked.connect(self.uploadFile)
         self.save_button.clicked.connect(self.saveChanges)
         self.cancel_button.clicked.connect(self.cancelChanges)
-        self.play_comboBox.activated.connect(self.playSelected)
+        self.play_comboBox.currentIndexChanged.connect(self.playSelected)
         self.remove_comboBox.currentIndexChanged.connect(self.deleteSelected)
-        self.interval_comboBox.currentIndexChanged.connect(self.selectInterval)
+        self.interval_spinBox.valueChanged.connect(self.selectInterval)
         self.frames_comboBox.currentIndexChanged.connect(self.selectFramesPerInterval)
+        self.time_comboBox.currentIndexChanged.connect(self.timeModifier)
+        self.power_button.clicked.connect(self.openShutdownDialog)
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

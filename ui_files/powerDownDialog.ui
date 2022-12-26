@@ -7,26 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>147</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QDialogButtonBox" name="buttonBox">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>100</y>
-      <width>171</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="standardButtons">
-     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -52,29 +39,32 @@
      <bool>true</bool>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>340</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuPower_off_the_device">
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <italic>true</italic>
-      <bold>true</bold>
-     </font>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>321</width>
+      <height>31</height>
+     </rect>
     </property>
-    <property name="title">
-     <string>Power off the device?</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Ok</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <addaction name="menuPower_off_the_device"/>
   </widget>
  </widget>
  <resources/>
