@@ -128,7 +128,7 @@ class GenerateScript:
         self.options.append("increment = " + self.frames_per_interval + "\n")
 
     def shutdownDevice(self):
-        os.system("sudo shutdown now")
+        os.system(". "  + self.pwd + "/remote-settings.sh" + " ssh $HOST sudo shutdown now")
 
     def execFile(self):
         self.setOptions()
