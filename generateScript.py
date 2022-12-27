@@ -81,15 +81,15 @@ class GenerateScript:
 
         else:
             if self.play_select == None:
-                [self.options.append(self.current_options[self.current_options.index(line)]) 
+                [self.options.append(self.current_options[self.current_options.index(line)] + "\n") 
                 for line in self.current_options if "file" in line]
 
             if self.delay == None:
-                [self.options.append(self.current_options[self.current_options.index(line)]) 
+                [self.options.append(self.current_options[self.current_options.index(line)] + "\n") 
                 for line in self.current_options if "delay" in line]
             
             if self.frames_per_interval == None:
-                [self.options.append(self.current_options[self.current_options.index(line)]) 
+                [self.options.append(self.current_options[self.current_options.index(line)] + "\n") 
                 for line in self.current_options if "increment" in line]
 
             [self.options_file.write(option) for option in self.options]
@@ -128,7 +128,7 @@ class GenerateScript:
         self.options.append("increment = " + self.frames_per_interval + "\n")
 
     def shutdownDevice(self):
-        os.system(". "  + self.pwd + "/remote-settings.sh" + " ssh $HOST sudo shutdown now")
+        os.system(". "  + self.pwd + "/remote-settings.sh\n" + "ssh $HOST sudo shutdown now")
 
     def execFile(self):
         self.setOptions()
