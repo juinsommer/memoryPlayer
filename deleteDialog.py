@@ -12,16 +12,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from generateScript import GenerateScript
 
 class Ui_Dialog(object):
-    def __init__(self, obj, file):
-        self.gs = obj
-        self.file = file
+    def __init__(self, obj):
         Dialog = QtWidgets.QDialog()
+        self.gs = obj
+        self.currentFiles = self.gs.getFileNames()
         self.setupUi(Dialog)
         self.retranslateUi(Dialog)
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(260, 145)
+        Dialog.resize(260, 220)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -169,7 +169,7 @@ class Ui_Dialog(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         Dialog.setPalette(palette)
         self.horizontalLayoutWidget = QtWidgets.QWidget(Dialog)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 110, 241, 31))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 180, 241, 31))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -180,31 +180,38 @@ class Ui_Dialog(object):
         self.ok_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.ok_button.setObjectName("ok_button")
         self.horizontalLayout.addWidget(self.ok_button)
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(40, 20, 181, 51))
-        self.label.setText("")
-        self.label.setObjectName("label")
+        self.listWidget = QtWidgets.QListWidget(Dialog)
+        self.listWidget.setGeometry(QtCore.QRect(10, 10, 241, 161))
+        self.listWidget.setObjectName("listWidget")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.label.setText("Delete " + self.file + "?")
+        Dialog.setWindowTitle(_translate("Dialog", "Delete File"))
         self.cancel_button.setText(_translate("Dialog", "Cancel"))
         self.ok_button.setText(_translate("Dialog", "Ok"))
+        self.updateFiles()
         self.cancel_button.clicked.connect(Dialog.accept)
-        self.ok_button.clicked.connect(Dialog.accept)
-        self.ok_button.clicked.connect(lambda:self.gs.deleteFile(self.file))
-        
+        self.ok_button.clicked.connect(self.deleteSelection)
+        self.ok_button.clicked.connect(Dialog.accept) 
 
+    def updateFiles(self):
+        self.listWidget.clear()
+        self.listWidget.addItems(self.currentFiles)
+
+    def deleteSelection(self):
+        file = self.listWidget.currentItem()
+        print(file.text())
+        self.gs.deleteFile(file.text())
 
 if __name__ == "__main__":
     import sys
+    gs = GenerateScript()
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
+    ui = Ui_Dialog(gs)
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
