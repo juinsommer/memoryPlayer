@@ -592,7 +592,7 @@
          <property name="maxVisibleItems">
           <number>40</number>
          </property>
-         <property name="placeholderText">
+         <property name="placeholderText" stdset="0">
           <string>Remove</string>
          </property>
         </widget>
@@ -698,7 +698,7 @@
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
          </property>
-         <property name="placeholderText">
+         <property name="placeholderText" stdset="0">
           <string>Play Selected</string>
          </property>
         </widget>
@@ -714,7 +714,7 @@
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
          </property>
-         <property name="placeholderText">
+         <property name="placeholderText" stdset="0">
           <string>Frames Per Interval</string>
          </property>
          <item>

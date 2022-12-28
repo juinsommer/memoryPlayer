@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -25,13 +26,10 @@ class MainUI(QWidget):
         self.gs = GenerateScript()
         self.time_modifier = False
         self.setupUi(MainWindow)
+        self.retranslateUi(MainWindow)
         self.ls = self.gs.getFileNames()
         self.play_comboBox.addItems(self.ls)
         self.remove_comboBox.addItems(self.ls)
-        self.frames_comboBox.setCurrentIndex(-1)
-        self.time_comboBox.setCurrentIndex(-1)
-        self.time_comboBox.setPlaceholderText("Interval")
-        self.interval_spinBox.setValue(2)
         self.connect()
         
     def setupUi(self, MainWindow):
@@ -365,6 +363,10 @@ class MainUI(QWidget):
         self.frames_comboBox.setItemText(5, _translate("MainWindow", "24"))
         self.time_comboBox.setItemText(0, _translate("MainWindow", "Minutes"))
         self.time_comboBox.setItemText(1, _translate("MainWindow", "Hours"))
+        self.frames_comboBox.setCurrentIndex(-1)
+        self.time_comboBox.setCurrentIndex(-1)
+        self.time_comboBox.setPlaceholderText("Interval")
+        self.interval_spinBox.setValue(2)
     
     def openUploadDialog(self):
         self.window = QtWidgets.QDialog()
