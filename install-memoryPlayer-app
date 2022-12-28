@@ -2,28 +2,27 @@
 
 KEYPATH="$HOME/.ssh/id_rsa"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  echo -e "\n>>> Installing Pip\n" 
-  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+if command -v pip >/dev/null 2>&1; then
+    echo -e "\nPip already installed."
+else 
+    echo -e "\n>>> Installing Pip\n" 
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3 get-pip.py
+    STATUS=$?
 fi
 
-python3 get-pip.py
-pip3 install pipreqs
+if [ $STATUS -eq 0 ]; then
+    pip install pipreqs
+else
+    exit 1
+fi
 
 # install dependencies
 pip install -r requirements.txt
-
-echo -e "\n>>> Generating SSH keys\n"
-
-ssh-keygen -t rsa
-sleep 1
-echo $KEYPATH
-
-ssh-copy-id -i $HOME/.ssh/id_rsa.pub $HOST ~/.ssh/id_rsa
-
-# Test SSH connection
-ssh $HOST
-
 if [ $? -eq 0 ]; then
-    echo -e "\nSSH connection successful.\n"
+    echo -e "\nInstallation successful"
+else
+    echo -e "\nInstallation Failed"
 fi
+
+exit 0
