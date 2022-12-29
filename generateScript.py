@@ -6,6 +6,7 @@ class GenerateScript:
         self.command_script_name = "commands-to-rpi.sh"
         self.getter_script_name = "get-fileNames.sh"
         self.upload_script_name = "upload-file.sh"
+        self.omni_file_name = "omni-epd.ini"
         self.options_file_name = "slowmovie.conf"
         self.options_file = open(self.options_file_name, "w")
         self.options = ["random-frames = False\n", 
@@ -21,11 +22,12 @@ class GenerateScript:
         self.play_select = None
         self.frames_per_interval = None
         self.delay = None
+        self.rotateValue = None
+        self.currentOmniFile()
         self.stop_service = "'sudo systemctl stop slowmovie;'"
         self.start_service = "'sudo systemctl start slowmovie;'"
         self.check_service_status = "'systemctl status slowmovie;'"
         
-
     def initOptions(self):
         # Copy config file with current options and store in current_options
         os.system(". " + self.pwd + "/remote-settings.sh\nscp -q $HOST:$RUN_PATH/" 
@@ -37,7 +39,7 @@ class GenerateScript:
         f.close()
         os.system("rm -f slowmovie_copy.conf")
         self.current_options = contents.split("\n")
-   
+    
     def initGetterScript(self):
         getterFile = open(self.getter_script_name, "w")
         getterFile.write(self.lines[0] + self.lines[1])
@@ -59,8 +61,22 @@ class GenerateScript:
             return True
         else:
             return False
-        
     
+    def currentOmniFile(self):
+        os.system(". " + self.pwd + "/remote-settings.sh\nscp -q $HOST:$RUN_PATH/"
+                       + self.omni_file_name + " " + self.pwd + "/omni-epd-copy.ini")
+
+        with open("omni-epd-copy.ini", "r") as f:
+            contents = f.read()
+
+        f.close()
+
+        os.system("rm -f omni-epd-copy.init")
+        self.current_omni = contents.split("\n")
+        self.current_omni.pop(0) # Remove "[Display]"
+        self.rotateValue = self.current_omni[0]
+        print(self.rotateValue)
+
     def cancel(self):
         os.system("rm -f " + self.command_script_name 
                 + "\nrm -f " + self.getter_script_name
@@ -127,7 +143,33 @@ class GenerateScript:
         self.options.append("increment = " + self.frames_per_interval + "\n")
 
     def rotateImage(self):
-        pass
+        if self.rotateValue == "rotate = 360":
+            self.rotateValue == "rotate = 0"
+
+        if self.rotateValue == "rotate = 270":
+            self.rotateValue == "rotate = 360"
+
+        if self.rotateValue == "rotate = 180":
+            self.rotateValue == "rotate = 270"
+
+        if self.rotateValue == "rotate = 90":
+            self.rotateValue == "rotate = 180"
+
+        else:
+            self.rotateValue = "rotate = 90"
+
+        print(self.rotateValue)
+
+        self.omniFile = open(self.omni_file_name, "w")
+        self.omniFile.write("[Display]\n" + self.rotateValue + "\n")
+        self.omniFile.close()
+        
+        # Restart service to view rotated image
+        os.system(". " + self.pwd + "/remote-settings.sh\nscp -q "
+                    + self.omni_file_name + " $HOST:$RUN_PATH" + "\nssh $HOST "
+                    + self.stop_service + self.start_service)
+
+        os.system("rm -f " + self.omni_file_name)
 
     def shutdownDevice(self):
         os.system(". "  + self.pwd + "/remote-settings.sh\n" + "ssh $HOST sudo shutdown now")
@@ -155,4 +197,4 @@ class GenerateScript:
 
 if __name__ == "__main__":
     gs = GenerateScript()
-    gs.setOptions()
+    gs.rotateImage()
