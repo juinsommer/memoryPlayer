@@ -57,7 +57,6 @@ class GenerateScript:
 
         if status.returncode == 0:
             return True
-
         else:
             return False
         
@@ -126,6 +125,9 @@ class GenerateScript:
 
         self.frames_per_interval = str(fpi)
         self.options.append("increment = " + self.frames_per_interval + "\n")
+
+    def rotateImage(self):
+        pass
 
     def shutdownDevice(self):
         os.system(". "  + self.pwd + "/remote-settings.sh\n" + "ssh $HOST sudo shutdown now")

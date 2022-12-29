@@ -7,8 +7,8 @@ from generateScript import GenerateScript
 from uploadDialog import Ui_uploadProgressDialog
 from powerDownDialog import Ui_power_dialogBox
 from deleteDialog import Ui_Dialog
+from playSelectDialog import Ui_playSelectDialogBox
 import sys
-import time
 
 # TODO: 
 # Make feature to rotate display
@@ -27,8 +27,6 @@ class MainUI(QWidget):
         self.time_modifier = False
         self.setupUi(MainWindow)
         self.retranslateUi(MainWindow)
-        self.ls = self.gs.getFileNames()
-        self.play_comboBox.addItems(self.ls)
         self.connect()
         
     def setupUi(self, MainWindow):
@@ -285,14 +283,13 @@ class MainUI(QWidget):
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.play_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
+        self.play_button = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.play_comboBox.setFont(font)
-        self.play_comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.play_comboBox.setObjectName("play_comboBox")
-        self.verticalLayout_3.addWidget(self.play_comboBox)
+        self.play_button.setFont(font)
+        self.play_button.setObjectName("play_button")
+        self.verticalLayout_3.addWidget(self.play_button)
         self.frames_comboBox = QtWidgets.QComboBox(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setBold(True)
@@ -350,7 +347,7 @@ class MainUI(QWidget):
         self.upload_button.setText(_translate("MainWindow", "Upload"))
         self.remove_button.setText(_translate("MainWindow", "Delete"))
         self.power_button.setText(_translate("MainWindow", "Power Off"))
-        self.play_comboBox.setProperty("placeholderText", _translate("MainWindow", "Play Selected"))
+        self.play_button.setText(_translate("MainWindow", "Play Selected"))
         self.frames_comboBox.setProperty("placeholderText", _translate("MainWindow", "Frames Per Interval"))
         self.frames_comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.frames_comboBox.setItemText(1, _translate("MainWindow", "2"))
@@ -364,12 +361,17 @@ class MainUI(QWidget):
         self.time_comboBox.setCurrentIndex(-1)
         self.time_comboBox.setPlaceholderText("Interval")
         self.interval_spinBox.setValue(2)
-    
-    def openUploadDialog(self):
+
+    def openUploadDialog(self, showError=None):
         self.window = QtWidgets.QDialog()
-        ui = Ui_uploadProgressDialog()
+        ui = Ui_uploadProgressDialog(showError)
         ui.setupUi(self.window)
-        self.window.show()
+        self.window.exec_()
+
+    def openPlaySelectDialog(self):
+        self.dialog = QtWidgets.QDialog()
+        ui = Ui_playSelectDialogBox(self.gs, self.dialog)
+        self.dialog.exec_()
 
     def openShutdownDialog(self):
         self.window = QtWidgets.QMainWindow()
@@ -378,10 +380,9 @@ class MainUI(QWidget):
         self.window.show()
 
     def openDeleteDialog(self):
-        self.window = QtWidgets.QDialog()
-        ui = Ui_Dialog(self.gs)
-        ui.setupUi(self.window)
-        self.window.show()
+        self.dialog = QtWidgets.QDialog()
+        ui = Ui_Dialog(self.gs, self.dialog)
+        self.dialog.exec_()
 
     def uploadFile(self):
         fileName, _= QFileDialog.getOpenFileName(self, "Select video file", "",
@@ -392,9 +393,7 @@ class MainUI(QWidget):
                 self.openUploadDialog()
 
             else:
-                raise Exception("\nUpload of " + fileName + " failed\n")
-
-            self.updateFiles(self.play_comboBox)
+                self.openUploadDialog(showError=True)
     
     def saveChanges(self):
         self.gs.execFile()
@@ -405,14 +404,7 @@ class MainUI(QWidget):
         MainWindow.close()
 
     def playSelected(self):
-        self.updateFiles(self.play_comboBox)
-        selectedFile = self.play_comboBox.currentIndex()
-
-        if self.ls[selectedFile] in self.ls:
-            self.gs.playSelected(self.ls[selectedFile])
-
-        else:
-            print(self.ls[selectedFile] + " is not found.")
+        self.openPlaySelectDialog()
 
     def selectInterval(self):
         interval = self.interval_spinBox.value()
@@ -441,23 +433,16 @@ class MainUI(QWidget):
     def deleteSelected(self):
         self.openDeleteDialog()
 
-    def updateFiles(self, comboBox):
-        if self.gs.getFileNames() != self.ls:
-            comboBox.clear()
-            comboBox.addItems(self.gs.getFileNames())
-            comboBox.SizeAdjustPolicy(QComboBox.AdjustToContents)
-
-
     def connect(self):
         self.upload_button.clicked.connect(self.uploadFile)
         self.save_button.clicked.connect(self.saveChanges)
         self.cancel_button.clicked.connect(self.cancelChanges)
-        self.play_comboBox.currentIndexChanged.connect(self.playSelected)
         self.remove_button.clicked.connect(self.deleteSelected)
         self.interval_spinBox.valueChanged.connect(self.selectInterval)
         self.frames_comboBox.currentIndexChanged.connect(self.selectFramesPerInterval)
         self.time_comboBox.currentIndexChanged.connect(self.timeModifier)
         self.power_button.clicked.connect(self.openShutdownDialog)
+        self.play_button.clicked.connect(self.playSelected)
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -12,8 +12,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_uploadProgressDialog(object):
-    def __init__(self):
+    def __init__(self, showError=None):
         uploadProgressDialog = QtWidgets.QDialog()
+        self.error = showError
         self.setupUi(uploadProgressDialog)
         self.retranslateUi(uploadProgressDialog)
 
@@ -194,8 +195,14 @@ class Ui_uploadProgressDialog(object):
     def retranslateUi(self, uploadProgressDialog):
         _translate = QtCore.QCoreApplication.translate
         uploadProgressDialog.setWindowTitle(_translate("uploadProgressDialog", "Dialog"))
-        self.label.setText(_translate("uploadProgressDialog", "Upload Successful"))
         self.pushButton.setText(_translate("uploadProgressDialog", "Close"))
+
+        if self.error == None:
+            self.label.setText(_translate("uploadProgressDialog", "Upload Successful"))
+        
+        else:
+            self.label.setText(_translate("uploadProgressDialog", "Upload Failed."))
+        
 
 
 if __name__ == "__main__":

@@ -533,9 +533,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>221</width>
-       <height>81</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="autoFillBackground">
@@ -551,9 +551,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>0</y>
+        <y>8</y>
         <width>198</width>
-        <height>81</height>
+        <height>120</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -579,28 +579,35 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="remove_comboBox">
+        <widget class="QPushButton" name="remove_button">
          <property name="font">
           <font>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+         <property name="text">
+          <string>Delete</string>
          </property>
-         <property name="maxVisibleItems">
-          <number>40</number>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="play_button">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="placeholderText" stdset="0">
-          <string>Remove</string>
+         <property name="text">
+          <string>Play Selected</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="camera_label">
      <property name="geometry">
       <rect>
        <x>280</x>
@@ -666,9 +673,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>190</y>
-       <width>221</width>
-       <height>111</height>
+       <y>180</y>
+       <width>231</width>
+       <height>131</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -681,72 +688,26 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>201</width>
-        <height>92</height>
+        <y>70</y>
+        <width>211</width>
+        <height>53</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QComboBox" name="play_comboBox">
+        <widget class="QLabel" name="interval_label">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+         <property name="text">
+          <string>Interval</string>
          </property>
-         <property name="placeholderText" stdset="0">
-          <string>Play Selected</string>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="frames_comboBox">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="placeholderText" stdset="0">
-          <string>Frames Per Interval</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>16</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>24</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item>
@@ -790,10 +751,62 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>211</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QSpinBox" name="frames_spinBox">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="frames_label">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Frames Per Interval</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="rotate_button">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Rotate</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <zorder>frame</zorder>
     <zorder>verticalLayoutWidget_2</zorder>
-    <zorder>label</zorder>
+    <zorder>camera_label</zorder>
     <zorder>frame_4</zorder>
    </widget>
    <widget class="Line" name="line">
