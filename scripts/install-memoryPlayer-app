@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+KEYPATH="$HOME/.ssh/id_rsa"
+
+if command -v pip >/dev/null 2>&1; then
+    echo -e "\nPip already installed."
+else 
+    echo -e "\n>>> Installing Pip\n" 
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3 get-pip.py
+    STATUS=$?
+fi
+
+if [ $STATUS -eq 0 ]; then
+    pip install pipreqs
+else
+    exit 1
+fi
+
+# install dependencies
+pip install -r requirements.txt
+if [ $? -eq 0 ]; then
+    echo -e "\nInstallation successful"
+else
+    echo -e "\nInstallation Failed"
+fi
+
+exit 0
