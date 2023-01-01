@@ -9,10 +9,11 @@ class GenerateScript:
         self.omni_file_name = "omni-epd.ini"
         self.options_file_name = "slowmovie.conf"
         self.options_file = open(self.options_file_name, "w")
-        self.options = ["random-frames = False\n", 
+        self.options = ["random-frames = false\n", 
                               "epd = waveshare_epd.epd7in5_V2\n", 
                               "contrast = 1.0\n",
-                              "clear = True\n"]
+                              "clear = true\n"
+                              "fullscreen = true\n"]
         self.pwd = subprocess.run(["pwd"], capture_output=True, text=True).stdout.rstrip()
         self.command_file = open(self.command_script_name, "w")
         self.current_options = []
@@ -80,7 +81,9 @@ class GenerateScript:
     def cancel(self):
         os.system("rm -f " + self.command_script_name 
                 + "\nrm -f " + self.getter_script_name
-                + "\nrm -f " + self.options_file_name)
+                + "\nrm -f " + self.options_file_name
+                + "\nrm -f " + "omni-epd-copy.init"
+                + "\nrm -f " + self.omni_file_name)
     
     def playSelected(self, path_to_file):
         if self.play_select != None:
@@ -144,19 +147,16 @@ class GenerateScript:
 
     def rotateImage(self):
         if self.rotateValue == "rotate = 360":
-            self.rotateValue == "rotate = 0"
-
-        if self.rotateValue == "rotate = 270":
-            self.rotateValue == "rotate = 360"
-
-        if self.rotateValue == "rotate = 180":
-            self.rotateValue == "rotate = 270"
-
-        if self.rotateValue == "rotate = 90":
-            self.rotateValue == "rotate = 180"
-
-        else:
             self.rotateValue = "rotate = 90"
+
+        elif self.rotateValue == "rotate = 270":
+            self.rotateValue = "rotate = 360"
+
+        elif self.rotateValue == "rotate = 180":
+            self.rotateValue = "rotate = 270"
+
+        elif self.rotateValue == "rotate = 90":
+            self.rotateValue = "rotate = 180"
 
         print(self.rotateValue)
 
@@ -178,7 +178,7 @@ class GenerateScript:
         self.setOptions()
 
         # Restart service if options have changed
-        if len(self.options) > 4:
+        if len(self.options) > 5:
             self.lines.append("ssh $HOST " + self.stop_service)
             self.lines.append(" " + self.start_service)
             [self.command_file.write(line) for line in self.lines]

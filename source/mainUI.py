@@ -180,7 +180,7 @@ class MainUI(QWidget):
         MainWindow.setPalette(palette)
         MainWindow.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../images/camera_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -256,7 +256,7 @@ class MainUI(QWidget):
         self.camera_label = QtWidgets.QLabel(self.frame_2)
         self.camera_label.setGeometry(QtCore.QRect(280, 170, 211, 201))
         self.camera_label.setText("")
-        self.camera_label.setPixmap(QtGui.QPixmap("images/cameraIcon.png"))
+        self.camera_label.setPixmap(QtGui.QPixmap("../images/cameraIcon.png"))
         self.camera_label.setObjectName("camera_label")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.frame_2)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(350, 20, 121, 61))
@@ -444,8 +444,8 @@ class MainUI(QWidget):
             self.time_modifier = False
 
     def selectFramesPerInterval(self):
-        frames = self.frames_comboBox.currentText()
-        self.gs.setFramesPerInterval(frames)
+        frames = self.frames_spinBox.value()
+        self.gs.setFramesPerInterval(str(frames))
 
     def connect(self):
         self.upload_button.clicked.connect(self.uploadFile)
@@ -457,6 +457,7 @@ class MainUI(QWidget):
         self.power_button.clicked.connect(self.openShutdownDialog)
         self.play_button.clicked.connect(self.playSelected)
         self.rotate_button.clicked.connect(self.gs.rotateImage)
+        self.frames_spinBox.valueChanged.connect(self.selectFramesPerInterval)
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
