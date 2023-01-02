@@ -13,7 +13,7 @@ class GenerateScript:
                               "epd = waveshare_epd.epd7in5_V2\n", 
                               "contrast = 1.0\n",
                               "clear = true\n"
-                              "fullscreen = true\n"]
+                              "start = 1\n"]
         self.pwd = subprocess.run(["pwd"], capture_output=True, text=True).stdout.rstrip()
         self.command_file = open(self.command_script_name, "w")
         self.current_options = []
@@ -158,7 +158,6 @@ class GenerateScript:
         elif self.rotateValue == "rotate = 90":
             self.rotateValue = "rotate = 180"
 
-        print(self.rotateValue)
 
         self.omniFile = open(self.omni_file_name, "w")
         self.omniFile.write("[Display]\n" + self.rotateValue + "\n")
