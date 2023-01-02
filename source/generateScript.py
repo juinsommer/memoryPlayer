@@ -40,7 +40,14 @@ class GenerateScript:
         f.close()
         os.system("rm -f slowmovie_copy.conf")
         self.current_options = contents.split("\n")
-    
+
+        for option in self.current_options:
+            if "increment" in option:
+                self.current_frames = int(option.split(" = ")[1])
+
+            if "delay" in option:
+                self.current_interval = int(int(option.split(" = ")[1]) / 60)
+
     def initGetterScript(self):
         getterFile = open(self.getter_script_name, "w")
         getterFile.write(self.lines[0] + self.lines[1])
@@ -76,7 +83,6 @@ class GenerateScript:
         self.current_omni = contents.split("\n")
         self.current_omni.pop(0) # Remove "[Display]"
         self.rotateValue = self.current_omni[0]
-        print(self.rotateValue)
 
     def cancel(self):
         os.system("rm -f " + self.command_script_name 
@@ -99,8 +105,9 @@ class GenerateScript:
 
         else:
             if self.play_select == None:
-                [self.options.append(self.current_options[self.current_options.index(line)] + "\n") 
-                for line in self.current_options if "file" in line]
+                currentVideo = self.getNowPlaying()
+                self.options.append("file = " + currentVideo + "\n")
+                [self.options.pop(self.options.index(line)) for line in self.options if "start" in line] # Remove "start = 1" so current video resumes
 
             if self.delay == None:
                 [self.options.append(self.current_options[self.current_options.index(line)] + "\n") 
@@ -112,6 +119,7 @@ class GenerateScript:
 
             [self.options_file.write(option) for option in self.options]
             self.options_file.close()
+            
             # Copy new option changes to device
             os.system(". " + self.pwd + "/remote-settings.sh" +"\nscp -q " 
                         + self.options_file_name +" $HOST:$RUN_PATH")
@@ -126,6 +134,19 @@ class GenerateScript:
 
         else:
             raise Exception("\nAccess to device directory failed: stderr=" + directory.stderr + "\n")
+    
+    def getNowPlaying(self):
+        getterFile = open("get-nowPlaying.sh", "w")
+        getterFile.write(self.lines[0] + self.lines[1])
+        getterFile.write("ssh $HOST cat $RUN_PATH/nowPlaying")
+        getterFile.close()
+
+        os.system("chmod +x get-nowPlaying.sh")
+        nowPlaying = subprocess.run(["./get-nowPlaying.sh"], capture_output=True, text=True).stdout
+        nowPlaying = nowPlaying.split("/SlowMovie/")[1]
+        os.system("rm -f get-nowPlaying.sh")
+
+        return nowPlaying
 
     def deleteFile(self, path_to_file):
         os.system(". " + self.pwd + "/remote-settings.sh\n" 

@@ -375,9 +375,9 @@ class MainUI(QWidget):
         self.time_comboBox.setItemText(1, _translate("MainWindow", "Hours"))
         self.frames_label.setText(_translate("MainWindow", "Frames Per Interval"))
         self.rotate_button.setText(_translate("MainWindow", "Rotate"))
-        self.time_comboBox.setCurrentIndex(-1)
-        self.time_comboBox.setPlaceholderText("Interval")
-        self.interval_spinBox.setValue(2)
+        self.time_comboBox.setCurrentIndex(0)
+        self.interval_spinBox.setValue(self.gs.current_interval)
+        self.frames_spinBox.setValue(self.gs.current_frames)
 
     def openUploadDialog(self, showError=None):
         self.window = QtWidgets.QDialog()
