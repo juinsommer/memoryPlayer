@@ -7,5 +7,8 @@ if [ $? -ne 0 ]; then
 fi
 
 git pull
+if [ $? -ne 0 ]; then
+    echo -e "\nUpdate unsuccessful."
+fi
 
 exit 0
