@@ -10,6 +10,24 @@
     <height>376</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>499</width>
+    <height>376</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>499</width>
+    <height>376</height>
+   </size>
+  </property>
   <property name="palette">
    <palette>
     <active>
@@ -452,6 +470,11 @@
     </disabled>
    </palette>
   </property>
+  <property name="font">
+   <font>
+    <family>Bitstream Vera Sans</family>
+   </font>
+  </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
   </property>
@@ -460,28 +483,40 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../images/camera_icon.png</normaloff>../images/camera_icon.png</iconset>
+    <normaloff>images/camera_icon.png</normaloff>images/camera_icon.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
-      <width>481</width>
+      <y>330</y>
+      <width>482</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="cancel_button">
+       <property name="minimumSize">
+        <size>
+         <width>237</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="font">
         <font>
-         <family>Ubuntu</family>
-         <pointsize>11</pointsize>
+         <family>Bitstream Vera Sans</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -496,10 +531,16 @@
      </item>
      <item>
       <widget class="QPushButton" name="save_button">
+       <property name="minimumSize">
+        <size>
+         <width>237</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="font">
         <font>
-         <family>Ubuntu</family>
-         <pointsize>11</pointsize>
+         <family>Bitstream Vera Sans</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -520,7 +561,7 @@
       <x>10</x>
       <y>10</y>
       <width>481</width>
-      <height>321</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -534,7 +575,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>221</width>
+       <width>231</width>
        <height>131</height>
       </rect>
      </property>
@@ -550,19 +591,68 @@
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>7</x>
         <y>8</y>
-        <width>198</width>
+        <width>211</width>
         <height>120</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QPushButton" name="upload_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>239</red>
+               <green>239</green>
+               <blue>239</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
          <property name="font">
           <font>
-           <family>Ubuntu</family>
-           <pointsize>11</pointsize>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -573,15 +663,38 @@
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Upload</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="remove_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -589,18 +702,38 @@
          <property name="text">
           <string>Delete</string>
          </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="play_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
          <property name="text">
           <string>Play Selected</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -611,25 +744,31 @@
      <property name="geometry">
       <rect>
        <x>280</x>
-       <y>170</y>
-       <width>211</width>
-       <height>201</height>
+       <y>110</y>
+       <width>191</width>
+       <height>191</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../images/cameraIcon.png</pixmap>
+      <pixmap>images/cameraIcon.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignHCenter</set>
      </property>
     </widget>
     <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>20</y>
-       <width>121</width>
-       <height>61</height>
+       <x>380</x>
+       <y>10</y>
+       <width>91</width>
+       <height>51</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -644,16 +783,16 @@
         <widget class="QPushButton" name="power_button">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>10</x>
            <y>10</y>
-           <width>81</width>
-           <height>41</height>
+           <width>71</width>
+           <height>31</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <family>Ubuntu</family>
-           <pointsize>11</pointsize>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -662,7 +801,10 @@
           <cursorShape>OpenHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Power Off</string>
+          <string>Power</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -673,9 +815,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>180</y>
+       <y>160</y>
        <width>231</width>
-       <height>131</height>
+       <height>141</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -688,9 +830,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>80</y>
         <width>211</width>
-        <height>53</height>
+        <height>55</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -698,6 +840,8 @@
         <widget class="QLabel" name="interval_label">
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -716,6 +860,7 @@
           <widget class="QSpinBox" name="interval_spinBox">
            <property name="font">
             <font>
+             <family>Bitstream Vera Sans</family>
              <stylestrategy>PreferDefault</stylestrategy>
             </font>
            </property>
@@ -735,6 +880,33 @@
          </item>
          <item>
           <widget class="QComboBox" name="time_comboBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>101</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>101</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bitstream Vera Sans</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <item>
             <property name="text">
              <string>Minutes</string>
@@ -756,8 +928,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>211</width>
-        <height>61</height>
+        <width>213</width>
+        <height>62</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -774,6 +946,8 @@
           <widget class="QLabel" name="frames_label">
            <property name="font">
             <font>
+             <family>Bitstream Vera Sans</family>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -790,8 +964,16 @@
        </item>
        <item>
         <widget class="QPushButton" name="rotate_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -799,32 +981,38 @@
          <property name="text">
           <string>Rotate</string>
          </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>
      </widget>
     </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>0</y>
+       <width>20</width>
+       <height>311</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <zorder>camera_label</zorder>
     <zorder>frame</zorder>
     <zorder>verticalLayoutWidget_2</zorder>
-    <zorder>camera_label</zorder>
     <zorder>frame_4</zorder>
-   </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>-20</x>
-      <y>325</y>
-      <width>521</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
+    <zorder>line</zorder>
    </widget>
    <zorder>frame_2</zorder>
    <zorder>horizontalLayoutWidget</zorder>
-   <zorder>line</zorder>
   </widget>
  </widget>
  <resources/>
