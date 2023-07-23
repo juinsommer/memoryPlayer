@@ -470,6 +470,11 @@
     </disabled>
    </palette>
   </property>
+  <property name="font">
+   <font>
+    <family>Bitstream Vera Sans</family>
+   </font>
+  </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
   </property>
@@ -510,8 +515,8 @@
        </property>
        <property name="font">
         <font>
-         <family>Ubuntu</family>
-         <pointsize>11</pointsize>
+         <family>Bitstream Vera Sans</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -534,8 +539,8 @@
        </property>
        <property name="font">
         <font>
-         <family>Ubuntu</family>
-         <pointsize>11</pointsize>
+         <family>Bitstream Vera Sans</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -646,8 +651,8 @@
          </property>
          <property name="font">
           <font>
-           <family>Ubuntu</family>
-           <pointsize>11</pointsize>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -688,6 +693,8 @@
          </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -713,6 +720,8 @@
          </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -782,8 +791,8 @@
          </property>
          <property name="font">
           <font>
-           <family>Ubuntu</family>
-           <pointsize>11</pointsize>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -823,7 +832,7 @@
         <x>10</x>
         <y>80</y>
         <width>211</width>
-        <height>53</height>
+        <height>55</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -831,6 +840,8 @@
         <widget class="QLabel" name="interval_label">
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -849,6 +860,7 @@
           <widget class="QSpinBox" name="interval_spinBox">
            <property name="font">
             <font>
+             <family>Bitstream Vera Sans</family>
              <stylestrategy>PreferDefault</stylestrategy>
             </font>
            </property>
@@ -886,6 +898,12 @@
              <height>26</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Bitstream Vera Sans</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="frame">
             <bool>false</bool>
            </property>
@@ -910,8 +928,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>211</width>
-        <height>61</height>
+        <width>213</width>
+        <height>62</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -928,6 +946,8 @@
           <widget class="QLabel" name="frames_label">
            <property name="font">
             <font>
+             <family>Bitstream Vera Sans</family>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -952,6 +972,8 @@
          </property>
          <property name="font">
           <font>
+           <family>Bitstream Vera Sans</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
