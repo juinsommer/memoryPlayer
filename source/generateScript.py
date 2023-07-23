@@ -1,5 +1,6 @@
 import os
 import subprocess
+from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 
 class GenerateScript:
     def __init__(self):
@@ -28,25 +29,43 @@ class GenerateScript:
         self.stop_service = "'sudo systemctl stop slowmovie;'"
         self.start_service = "'sudo systemctl start slowmovie;'"
         self.check_service_status = "'systemctl status slowmovie;'"
-        
+    
+    def showErrorDialog(self, message, title):
+        """Display error/warning message on exceptions.
+        Usable by any window.
+
+        Args:
+            message (str): Message to be displayed.
+            tital (str): Title of dialog box.
+        """
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Critical)
+        error_dialog.setWindowTitle(title)
+        error_dialog.setText(message)
+        error_dialog.setStandardButtons(QMessageBox.Ok)
+        error_dialog.exec_()
+
     def initOptions(self):
-        # Copy config file with current options and store in current_options
-        os.system(". " + self.pwd + "/remote-settings.sh\nscp -q $HOST:$RUN_PATH/" 
-                    + self.options_file_name + " " + self.pwd + "/slowmovie_copy.conf")
+        try:
+            # Copy config file with current options and store in current_options
+            os.system(". " + self.pwd + "/remote-settings.sh\nscp -q $HOST:$RUN_PATH/" 
+                        + self.options_file_name + " " + self.pwd + "/slowmovie_copy.conf")
 
-        with open("slowmovie_copy.conf", "r") as f:
-            contents = f.read()
+            with open("slowmovie_copy.conf", "r") as f:
+                contents = f.read()
 
-        f.close()
-        os.system("rm -f slowmovie_copy.conf")
-        self.current_options = contents.split("\n")
+            os.system("rm -f slowmovie_copy.conf")
+            self.current_options = contents.split("\n")
 
-        for option in self.current_options:
-            if "increment" in option:
-                self.current_frames = int(option.split(" = ")[1])
+            for option in self.current_options:
+                if "increment" in option:
+                    self.current_frames = int(option.split(" = ")[1])
 
-            if "delay" in option:
-                self.current_interval = int(int(option.split(" = ")[1]) / 60)
+                if "delay" in option:
+                    self.current_interval = int(int(option.split(" = ")[1]) / 60)
+
+        except Exception:
+            self.showErrorDialog(message="\nCannot connect to MemoryPlayer Device", title="Warning")
 
     def initGetterScript(self):
         getterFile = open(self.getter_script_name, "w")
