@@ -27,7 +27,6 @@ class MainUI(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.gs = GenerateScript()
-        self.connect()
         self.time_modifier = False
         
     def openUploadDialog(self, showError=None):
@@ -99,12 +98,12 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.gs.setFramesPerInterval(str(frames))
 
     def connect(self):
-        try:
-            self.interval_spinBox.setValue(self.gs.current_interval)
-            self.frames_spinBox.setValue(self.gs.current_frames)
+        #try:
+        self.interval_spinBox.setValue(self.gs.current_interval)
+        self.frames_spinBox.setValue(self.gs.current_frames)
 
-        except Exception:
-            pass
+        #except Exception:
+        #    pass
 
         self.time_comboBox.setCurrentIndex(0)
         self.upload_button.clicked.connect(self.uploadFile)
@@ -124,5 +123,6 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = MainUI()
     ui.setupUi(MainWindow)
+    ui.connect()
     MainWindow.show()
     sys.exit(app.exec_())   
