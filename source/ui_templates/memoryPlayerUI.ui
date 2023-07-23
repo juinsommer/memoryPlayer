@@ -486,19 +486,28 @@
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>330</y>
-      <width>481</width>
+      <width>482</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="cancel_button">
+       <property name="minimumSize">
+        <size>
+         <width>237</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Ubuntu</family>
@@ -517,6 +526,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="save_button">
+       <property name="minimumSize">
+        <size>
+         <width>237</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Ubuntu</family>
@@ -580,6 +595,18 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QPushButton" name="upload_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="palette">
           <palette>
            <active>
@@ -653,6 +680,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="remove_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <weight>75</weight>
@@ -672,6 +705,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="play_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <weight>75</weight>
@@ -905,6 +944,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="rotate_button">
+         <property name="minimumSize">
+          <size>
+           <width>209</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <weight>75</weight>

@@ -98,12 +98,12 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.gs.setFramesPerInterval(str(frames))
 
     def connect(self):
-        #try:
-        self.interval_spinBox.setValue(self.gs.current_interval)
-        self.frames_spinBox.setValue(self.gs.current_frames)
+        try:
+            self.interval_spinBox.setValue(self.gs.current_interval)
+            self.frames_spinBox.setValue(self.gs.current_frames)
 
-        #except Exception:
-        #    pass
+        except Exception:
+           pass
 
         self.time_comboBox.setCurrentIndex(0)
         self.upload_button.clicked.connect(self.uploadFile)
